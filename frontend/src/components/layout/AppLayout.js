@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Activity, LayoutDashboard, FileText, Hospital, UserCheck,
+  Activity, LayoutDashboard, FileText, Building2, UserCheck,
   DollarSign, Map, MessageSquare, Settings, LogOut, Bell,
   ChevronLeft, ChevronRight, User, Shield, Menu, X, Search
 } from 'lucide-react';
@@ -11,7 +11,7 @@ import { useAuthStore } from '../../store/authStore';
 const navItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/reports', icon: FileText, label: 'Medical Reports' },
-  { path: '/hospitals', icon: Hospital, label: 'Find Hospitals' },
+  { path: '/hospitals', icon: Building2, label: 'Find Hospitals' },
   { path: '/doctors', icon: UserCheck, label: 'Find Doctors' },
   { path: '/cost-predictor', icon: DollarSign, label: 'Cost Predictor' },
   { path: '/travel-planner', icon: Map, label: 'Travel Planner' },

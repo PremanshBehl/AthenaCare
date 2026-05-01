@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Users, FileText, Hospital, Brain, TrendingUp, Shield,
+  Users, FileText, Building2, Brain, TrendingUp, Shield,
   Search, Trash2, Eye, MoreVertical, Activity, AlertTriangle,
   CheckCircle, Clock, BarChart3
 } from 'lucide-react';
@@ -37,7 +37,7 @@ const AdminPage = () => {
     { id: 'overview', label: 'Overview', icon: BarChart3 },
     { id: 'users', label: 'Users', icon: Users },
     { id: 'reports', label: 'Reports', icon: FileText },
-    { id: 'hospitals', label: 'Hospitals', icon: Hospital },
+    { id: 'hospitals', label: 'Hospitals', icon: Building2 },
     { id: 'ai', label: 'AI Usage', icon: Brain },
   ];
 
