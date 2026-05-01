@@ -147,17 +147,9 @@ class MedicalDocumentClassifier:
         self._try_load_zero_shot()
 
     def _try_load_zero_shot(self):
-        """Try to load HuggingFace zero-shot classifier (optional)"""
-        try:
-            from transformers import pipeline
-            self.zero_shot_classifier = pipeline(
-                "zero-shot-classification",
-                model="facebook/bart-large-mnli",
-                device=-1,
-            )
-            logger.info("Zero-shot classifier loaded")
-        except Exception as e:
-            logger.warning(f"Zero-shot classifier not available: {e}. Using rule-based classification.")
+        """Zero-shot disabled on Render Free Tier to prevent OOM crash"""
+        logger.warning("Zero-shot classifier disabled to prevent OOM. Using rule-based classification.")
+        self.zero_shot_classifier = None
 
     def _normalize_text(self, text: str) -> str:
         """Normalize text for analysis"""

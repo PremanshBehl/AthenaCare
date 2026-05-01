@@ -322,17 +322,8 @@ def generate_summary(
 ) -> str:
     """Generate AI summary — tries HuggingFace, falls back to rule-based"""
 
-    # Try transformer summarization
-    try:
-        from transformers import pipeline
-        summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=-1)
-        # Use first 1000 chars
-        truncated = text[:1000]
-        if len(truncated) > 100:
-            result = summarizer(truncated, max_length=120, min_length=40, do_sample=False)
-            return result[0]["summary_text"]
-    except Exception:
-        pass
+    # Transformer summarization disabled on Render Free Tier to prevent OOM crash
+    # Using rule-based summary generation instead
 
     # Rule-based summary
     parts = [f"This is a {report_type}."]
