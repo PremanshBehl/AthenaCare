@@ -13,7 +13,13 @@ from app.core.security import get_current_user
 from app.services.rag_chatbot import RAGChatbot
 
 router = APIRouter()
-chatbot = RAGChatbot()
+_chatbot = None
+
+def get_chatbot() -> RAGChatbot:
+    global _chatbot
+    if _chatbot is None:
+        _chatbot = RAGChatbot()
+    return _chatbot
 
 
 class ChatMessage(BaseModel):
@@ -44,6 +50,7 @@ async def send_message(
         raise HTTPException(status_code=400, detail="Message too long (max 2000 chars)")
 
     # Get AI response
+    chatbot = get_chatbot()
     response = await chatbot.get_response(
         message=request.message,
         history=[(m.role, m.content) for m in request.history],

@@ -21,12 +21,19 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    import traceback
     logger.info("🚀 AthenaCare AI starting up...")
-    await connect_db()
-    logger.info("✅ Database connected")
+    try:
+        await connect_db()
+        logger.info("✅ Database connected")
+    except Exception as e:
+        logger.error(f"❌ Startup Error: {traceback.format_exc()}")
     yield
     logger.info("🛑 Shutting down...")
-    await disconnect_db()
+    try:
+        await disconnect_db()
+    except Exception as e:
+        logger.error(f"❌ Shutdown Error: {traceback.format_exc()}")
 
 
 app = FastAPI(
