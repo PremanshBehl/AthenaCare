@@ -107,31 +107,9 @@ class RAGChatbot:
             logger.warning(f"FAISS setup failed: {e}. Using keyword retrieval.")
 
     def _setup_faiss(self):
-        """Set up FAISS vector store with medical knowledge base"""
-        try:
-            from sentence_transformers import SentenceTransformer
-            import faiss
-            import numpy as np
-
-            self.embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-
-            # Create embeddings for knowledge base
-            texts = [doc["content"] for doc in MEDICAL_KNOWLEDGE_BASE]
-            embeddings = self.embedding_model.encode(texts, convert_to_numpy=True)
-
-            # Build FAISS index
-            dimension = embeddings.shape[1]
-            self.faiss_index = faiss.IndexFlatIP(dimension)  # Inner product (cosine similarity)
-
-            # Normalize for cosine similarity
-            faiss.normalize_L2(embeddings)
-            self.faiss_index.add(embeddings)
-            self.knowledge_texts = texts
-
-            logger.info(f"FAISS index built with {len(texts)} documents")
-        except ImportError:
-            logger.warning("FAISS/sentence-transformers not available")
-            raise
+        """Set up FAISS disabled on Render Free Tier to prevent OOM"""
+        logger.warning("FAISS and SentenceTransformers disabled to prevent OOM crash. Using keyword retrieval.")
+        raise ImportError("Disabled on Free Tier")
 
     def _retrieve_relevant_docs(self, query: str, k: int = 3) -> List[Dict]:
         """Retrieve relevant documents using FAISS similarity search"""
@@ -235,14 +213,8 @@ RESPONSE:"""
         except Exception as e:
             logger.warning(f"OpenAI not available: {e}")
 
-        # Try HuggingFace
-        try:
-            from transformers import pipeline
-            generator = pipeline("text-generation", model="gpt2", max_new_tokens=200)
-            result = generator(prompt[-500:], max_new_tokens=200, do_sample=True, temperature=0.7)
-            return result[0]["generated_text"][len(prompt):]
-        except Exception as e:
-            logger.warning(f"HuggingFace not available: {e}")
+        # HuggingFace GPT-2 fallback disabled on Render Free Tier to prevent OOM crash
+        logger.warning("HuggingFace GPT-2 disabled. Falling back to template response.")
 
         # Fallback: template-based response
         return self._template_response(prompt)
